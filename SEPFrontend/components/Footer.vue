@@ -1,7 +1,9 @@
 <template>
   <footer>
-    <div>
-      This is footer
+    <div class="columns is-marginless is-vcentered space-between is-mobile">
+      <div class="column is-paddingless">
+        This is footer
+      </div>
     </div>
   </footer>
 </template>
@@ -12,8 +14,7 @@ export default {};
 
 <style lang="scss" scoped>
 footer {
-  position: fixed;
-  bottom: 0;
+  position: absolute;
   width: 100%;
   height: 3rem;
   background: black;

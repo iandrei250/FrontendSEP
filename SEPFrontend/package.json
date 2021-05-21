@@ -12,9 +12,12 @@
     "core-js": "^3.9.1",
     "less-loader": "^5.0.0",
     "node-sass": "^4.14.1",
-    "nuxt": "^2.15.3"
+    "nuxt": "^2.7.0"
   },
   "devDependencies": {
+    "@fortawesome/free-brands-svg-icons": "^5.15.3",
+    "@fortawesome/free-solid-svg-icons": "^5.15.3",
+    "@nuxtjs/fontawesome": "^1.1.2",
     "sass": "^1.32.13",
     "sass-loader": "7.3.1"
   }

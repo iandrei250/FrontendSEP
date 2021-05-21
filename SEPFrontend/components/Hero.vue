@@ -1,6 +1,8 @@
 <template>
   <section>
     <div class="container">
+      <div class="overlay"></div>
+
       <div class="text">Design is the silent ambassador of your brand</div>
       <div class="sub-text">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse a
@@ -25,7 +27,7 @@ export default {};
   flex-direction: column;
   width: 100%;
   height: 500px;
-  background: green;
+  position: relative;
   justify-content: center;
   align-items: center;
   background-image: url("../assets/images/pepe.jpg");
@@ -39,6 +41,8 @@ export default {};
   padding-bottom: 12px;
   font-weight: 700;
   white-space: pre;
+  color: white;
+  z-index: 2;
 }
 
 .sub-text {
@@ -47,5 +51,20 @@ export default {};
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   padding-bottom: 12px;
   width: 35%;
+  z-index: 2;
+  color: white;
+}
+
+.overlay {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  opacity: 0.3;
+  background: rgb(0, 0, 0);
+  z-index: 2;
+}
+
+.interactive-button {
+  z-index: 2;
 }
 </style>

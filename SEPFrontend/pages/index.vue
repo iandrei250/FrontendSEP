@@ -2,16 +2,19 @@
   <div class="container">
     <Hero />
     <Featured />
+    <Spotlight />
   </div>
 </template>
 
 <script>
 import Hero from "../components/Hero";
 import Featured from "../components/FeaturedProd.vue";
+import Spotlight from "../components/Spotlight.vue";
 export default {
   components: {
     Hero,
-    Featured
+    Featured,
+    Spotlight
   },
   layout: "default"
 };
