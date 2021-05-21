@@ -1,7 +1,7 @@
 <template>
   <section>
     <div class="container">
-      <div class="featured-title">Featured Products</div>
+      <div class="featured-title">Newest Movies</div>
       <div class="featured-container">
         <div
           id="featured-solutions"
@@ -57,6 +57,8 @@ export default {
 
 .container {
   width: 100%;
+  margin-top: 50px;
+  cursor: default;
 }
 
 .featured-container {
@@ -78,7 +80,7 @@ export default {
   border-radius: 10px;
   display: flex;
   flex-flow: column;
-  margin: 12px;
+  margin: 22px;
   width: 25%;
   height: 100%;
   background: white;

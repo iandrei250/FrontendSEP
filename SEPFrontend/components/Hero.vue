@@ -26,13 +26,14 @@ export default {};
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 500px;
+  height: 768px;
   position: relative;
   justify-content: center;
   align-items: center;
   background-image: url("../assets/images/pepe.jpg");
   background-repeat: no-repeat;
   background-size: cover;
+  cursor: default;
 }
 
 .text {
