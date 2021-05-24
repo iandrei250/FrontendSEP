@@ -5,15 +5,38 @@
     </transition>
     <transition name="slide" appear>
       <div class="modal" v-if="showModal">
-        <h1>Lorem Ipsum</h1>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem
-          provident explicabo accusamus laudantium voluptatum nobis sed nesciunt
-          neque possimus molestiae?
-        </p>
-        <button class="button" @click="close">
-          Close Modal
-        </button>
+        <div class="first-half">
+          <h1>Sign In</h1>
+          <div class="login-form">
+            <input
+              type="text"
+              id="username"
+              name="username"
+              placeholder="Username"
+              ref="username"
+            />
+            <input
+              type="password"
+              id="password"
+              name="password"
+              placeholder="Password"
+              ref="password"
+            />
+            <div class="buttons-container">
+              <button class="button" @click="login">
+                Log In
+              </button>
+              <button class="button" @click="close">
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="second-half">
+          <div class="login-icon">
+            <img src="../assets/images/Forms/LoginIcon.png" alt="Login Icon" />
+          </div>
+        </div>
       </div>
     </transition>
   </div>
@@ -38,12 +61,19 @@ export default {
     close() {
       this.showModal = false;
       window.onscroll = function() {};
+    },
+
+    login() {
+      var user = document.getElementById("username").value;
+      var pass = document.getElementById("password").value;
+      alert(user + "\n" + pass);
     }
   }
 };
 </script>
 
 <style lang="scss" scoped>
+@import "../assets/style/butons.scss";
 .modal-overlay {
   position: absolute;
   top: 0;
@@ -55,14 +85,16 @@ export default {
 }
 
 .modal {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 99;
+  display: flex;
 
-  width: 100%;
-  max-width: 400px;
+  width: 695px;
+  height: 353px;
   background-color: #fff;
   border-radius: 16px;
 
@@ -70,17 +102,49 @@ export default {
 
   h1 {
     color: #222;
-    font-size: 32px;
+    font-size: 42px;
     font-weight: 900;
     margin-bottom: 15px;
+    padding-left: 20px;
   }
 
-  p {
-    color: #666;
-    font-size: 18px;
-    font-weight: 400;
-    margin-bottom: 15px;
+  .login-form {
+    display: flex;
+    flex-flow: column;
+
+    input {
+      margin: 8px;
+      height: 48px;
+      border: 2px solid #3e3e3e;
+      text-align: left;
+      padding-left: 22px;
+    }
   }
+}
+
+.first-half {
+  width: 50%;
+  align-self: center;
+}
+
+.second-half {
+  width: 50%;
+  align-self: center;
+  .login-icon {
+    display: flex;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+  }
+
+  img {
+    width: 300px;
+    height: 310px;
+  }
+}
+
+.buttons-container {
+  display: flex;
 }
 
 .fade-enter-active,
