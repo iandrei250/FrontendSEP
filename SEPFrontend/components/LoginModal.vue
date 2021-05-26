@@ -94,7 +94,7 @@ export default {
   display: flex;
 
   width: 695px;
-  height: 353px;
+  height: 373px;
   background-color: #fff;
   border-radius: 16px;
 
@@ -118,6 +118,7 @@ export default {
       border: 2px solid #3e3e3e;
       text-align: left;
       padding-left: 22px;
+      border-radius: 11px;
     }
   }
 }
@@ -138,8 +139,8 @@ export default {
   }
 
   img {
-    width: 300px;
-    height: 310px;
+    width: 250px;
+    height: 260px;
   }
 }
 

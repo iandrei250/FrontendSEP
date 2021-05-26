@@ -1,6 +1,7 @@
 <template>
   <div>
     <LoginModal ref="login" />
+    <RegisterModal ref="register" />
     <nav
       ref="navbar"
       class="navbar"
@@ -17,20 +18,31 @@
       <div class="login-btn" @click="openLogin()">
         <nuxt-link class="interactive-button" to="#">Login</nuxt-link>
       </div>
+      <div class="login-btn" @click="openRegister()">
+        <nuxt-link class="interactive-button" to="#">Register</nuxt-link>
+      </div>
     </nav>
   </div>
 </template>
 
 <script>
 import LoginModal from "../components/LoginModal";
+import RegisterModal from "../components/RegisterModal";
 export default {
   components: {
-    LoginModal
+    LoginModal,
+    RegisterModal
   },
 
   methods: {
     openLogin() {
       this.$refs["login"].open();
+      this.$refs["register"].close();
+    },
+
+    openRegister() {
+      this.$refs["register"].open();
+      this.$refs["login"].close();
     }
   }
 };
