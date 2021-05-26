@@ -1,9 +1,7 @@
 <template>
   <footer>
-    <div class="columns is-marginless is-vcentered space-between is-mobile">
-      <div class="column is-paddingless">
-        This is footer
-      </div>
+    <div>
+      Footer
     </div>
   </footer>
 </template>
@@ -17,8 +15,10 @@ footer {
   position: absolute;
   width: 100%;
   height: 3rem;
+  bottom: 0;
   background: black;
   color: white;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
+  margin-top: 10px;
 }
 </style>

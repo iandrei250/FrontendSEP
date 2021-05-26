@@ -34,6 +34,7 @@ html {
 }
 
 body {
+  position: relative;
   margin: 0px !important;
   padding: 0px !important;
 }

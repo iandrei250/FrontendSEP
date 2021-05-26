@@ -1,7 +1,6 @@
 <template>
   <div>
     <client-only>
-      <Navbar />
       <nuxt />
       <Footer />
     </client-only>
@@ -9,14 +8,12 @@
 </template>
 
 <script scoped>
-import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 export default {
   components: {
-    Navbar,
     Footer
   }
 };
 </script>
 
-<style scoped></style>
+<style></style>
