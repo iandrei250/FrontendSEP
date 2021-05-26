@@ -48,11 +48,11 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import "../assets/style/butons.scss";
 nav {
   position: absolute !important;
-  z-index: 999;
+  z-index: 3;
 }
 .navbar {
   display: flex;

@@ -32,10 +32,9 @@ html {
   width: 0; /* Remove scrollbar space */
   background: transparent; /* Optional: just make scrollbar invisible */
 }
-
 body {
-  position: relative;
   margin: 0px !important;
   padding: 0px !important;
+  position: relative;
 }
 </style>
