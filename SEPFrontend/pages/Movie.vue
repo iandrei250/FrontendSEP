@@ -36,7 +36,7 @@
     </div>
     <hr class="line-separator" />
     <div class="cast">
-      <div class="cast-header">Cast :</div>
+      <div class="cast-header">Cast1 :</div>
       <div class="cast-container">
         <div class="actor" v-for="actor in actors" :key="actor.key">
           <div class="actor-image">
