@@ -10,7 +10,7 @@
     >
       <div class="logo-title">Logo and title</div>
       <div class="links">
-        <nuxt-link class="navbar-item" to="#">Home</nuxt-link>
+        <nuxt-link class="navbar-item" to="/">Home</nuxt-link>
         <nuxt-link class="navbar-item" to="#">About us</nuxt-link>
         <nuxt-link class="navbar-item" to="#">Contact</nuxt-link>
         <nuxt-link class="navbar-item" to="#">Register</nuxt-link>
@@ -37,12 +37,10 @@ export default {
   methods: {
     openLogin() {
       this.$refs["login"].open();
-      this.$refs["register"].close();
     },
 
     openRegister() {
       this.$refs["register"].open();
-      this.$refs["login"].close();
     }
   }
 };
