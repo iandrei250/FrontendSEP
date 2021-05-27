@@ -45,6 +45,19 @@
           <div class="actor-name">{{ actor.name }}</div>
         </div>
       </div>
+
+      <div class="directors-header">Directors:</div>
+      <div class="directors-container">
+        <div class="director" v-for="director in directors" :key="director.key">
+          <div class="director-image">
+            <img
+              src="../assets/images/spooder.jpg"
+              alt="Director profile image"
+            />
+          </div>
+          <div class="director-name">{{ director.name }}</div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -56,6 +69,69 @@ export default {
         {
           name: "Actor name",
           image: "Actor image"
+        },
+        {
+          name: "Actor name",
+          image: "Actor image"
+        },
+        {
+          name: "Actor name",
+          image: "Actor image"
+        },
+        {
+          name: "Actor name",
+          image: "Actor image"
+        },
+        {
+          name: "Actor name",
+          image: "Actor image"
+        },
+        {
+          name: "Actor name",
+          image: "Actor image"
+        },
+        {
+          name: "Actor name",
+          image: "Actor image"
+        },
+        {
+          name: "Actor name",
+          image: "Actor image"
+        },
+        {
+          name: "Actor name",
+          image: "Actor image"
+        },
+        {
+          name: "Actor name",
+          image: "Actor image"
+        },
+        {
+          name: "Actor name",
+          image: "Actor image"
+        }
+      ],
+
+      directors: [
+        {
+          name: "Director name",
+          image: "Director image"
+        },
+        {
+          name: "Director name",
+          image: "Director image"
+        },
+        {
+          name: "Director name",
+          image: "Director image"
+        },
+        {
+          name: "Director name",
+          image: "Director image"
+        },
+        {
+          name: "Director name",
+          image: "Director image"
         }
       ]
     };
@@ -164,20 +240,59 @@ body {
 }
 
 .cast-container {
-  width: 100%;
   display: flex;
+  flex-wrap: wrap;
 
   .actor {
     display: flex;
-    flex-flow: column;
-    align-items: center;
+    margin: 12px;
+    flex-basis: 27.5%;
     .actor-image {
+      align-self: center;
       img {
         width: 100px;
         height: 100px;
         border-radius: 50%;
       }
     }
+
+    .actor-name {
+      align-self: center;
+      margin-left: 20px;
+      font-size: 20px;
+      font-weight: 600;
+    }
   }
+}
+
+.directors-container {
+  display: flex;
+  flex-wrap: wrap;
+  .director {
+    display: flex;
+    margin: 12px;
+    flex-basis: 27.5%;
+    .director-image {
+      align-self: center;
+      img {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+      }
+    }
+
+    .director-name {
+      align-self: center;
+      margin-left: 20px;
+      font-size: 20px;
+      font-weight: 600;
+    }
+  }
+}
+.directors-header {
+  margin-bottom: 12px;
+  font-size: 40px;
+  font-weight: 550;
+  letter-spacing: 1px;
 }
 </style>
