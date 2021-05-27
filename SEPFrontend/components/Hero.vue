@@ -55,7 +55,7 @@ export default {};
   font-weight: 700;
   white-space: pre;
   color: white;
-  z-index: 999;
+  z-index: 3;
 }
 
 .sub-text {
