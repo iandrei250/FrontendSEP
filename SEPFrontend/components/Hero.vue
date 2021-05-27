@@ -2,7 +2,20 @@
   <section>
     <div class="container">
       <div class="overlay"></div>
-
+      <div class="video-wrapper">
+        <video
+          class="video-background"
+          autoplay
+          muted
+          loop
+          poster="../assets/images/video-wall-palceholder.jpg"
+        >
+          <source
+            src="../assets/videos/video wall lighter.mp4"
+            type="video/mp4"
+          />
+        </video>
+      </div>
       <div class="text">Design is the silent ambassador of your brand</div>
       <div class="sub-text">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse a
@@ -30,7 +43,6 @@ export default {};
   position: relative;
   justify-content: center;
   align-items: center;
-  background-image: url("../assets/images/pepe.jpg");
   background-repeat: no-repeat;
   background-size: cover;
   cursor: default;
@@ -43,7 +55,7 @@ export default {};
   font-weight: 700;
   white-space: pre;
   color: white;
-  z-index: 2;
+  z-index: 999;
 }
 
 .sub-text {
@@ -52,7 +64,7 @@ export default {};
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   padding-bottom: 12px;
   width: 35%;
-  z-index: 2;
+  z-index: 3;
   color: white;
 }
 
@@ -60,12 +72,25 @@ export default {};
   width: 100%;
   height: 100%;
   position: absolute;
-  opacity: 0.3;
+  opacity: 0.8;
   background: rgb(0, 0, 0);
   z-index: 2;
 }
 
 .interactive-button {
   z-index: 2;
+}
+
+.video-wrapper {
+  position: absolute;
+  z-index: 1;
+  width: 100%;
+  .video-background {
+    object-fit: fill;
+    height: 768px;
+    width: 100%;
+    right: 0;
+    bottom: 0;
+  }
 }
 </style>

@@ -102,7 +102,7 @@ section {
 
 .button-holder {
   z-index: 2;
-  margin-bottom: auto;
+  margin-bottom: 50px;
   margin-top: auto;
 }
 
