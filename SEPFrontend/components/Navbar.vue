@@ -11,8 +11,8 @@
       <div class="logo-title">Logo and title</div>
       <div class="links">
         <nuxt-link class="navbar-item" to="/">Home</nuxt-link>
-        <nuxt-link class="navbar-item" to="#">About us</nuxt-link>
-        <nuxt-link class="navbar-item" to="#">Contact</nuxt-link>
+        <nuxt-link class="navbar-item" to="/movie">Movie</nuxt-link>
+        <nuxt-link class="navbar-item" to="/profile">Profile</nuxt-link>
         <nuxt-link class="navbar-item" to="#">Register</nuxt-link>
       </div>
       <div class="login-btn" @click="openLogin()">
