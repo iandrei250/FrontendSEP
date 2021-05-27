@@ -80,7 +80,7 @@ export default {
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 98;
+  z-index: 998;
   background-color: rgba(0, 0, 0, 0.3);
 }
 
@@ -90,7 +90,7 @@ export default {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  z-index: 99;
+  z-index: 999;
   display: flex;
 
   width: 695px;
