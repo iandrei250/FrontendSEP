@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div :design="design">
     <LoginModal ref="login" />
     <RegisterModal ref="register" />
     <nav
@@ -14,6 +14,7 @@
         <nuxt-link class="navbar-item" to="/movie">Movie</nuxt-link>
         <nuxt-link class="navbar-item" to="/profile">Profile</nuxt-link>
         <nuxt-link class="navbar-item" to="#">Register</nuxt-link>
+        <nuxt-link class="navbar-item" to="/movielist">Movies</nuxt-link>
       </div>
       <div class="login-btn" @click="openLogin()">
         <nuxt-link class="interactive-button" to="#">Login</nuxt-link>
@@ -29,6 +30,12 @@
 import LoginModal from "../components/LoginModal";
 import RegisterModal from "../components/RegisterModal";
 export default {
+  props: {
+    design: {
+      validator: prop => ["default", "movielist"].includes(prop),
+      default: "default"
+    }
+  },
   components: {
     LoginModal,
     RegisterModal
@@ -46,7 +53,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import "../assets/style/butons.scss";
 nav {
   position: absolute !important;
@@ -56,7 +63,6 @@ nav {
   display: flex;
   min-width: 100%;
   min-height: 80px;
-  background-color: transparent;
   color: white;
   align-items: center;
 
@@ -98,5 +104,13 @@ nav {
   width: 25%;
   height: 100%;
   cursor: default;
+}
+
+.navbar[design="default"] {
+  background-color: transparent !important;
+}
+
+.navbar[design="movielist"] {
+  background-color: black !important;
 }
 </style>

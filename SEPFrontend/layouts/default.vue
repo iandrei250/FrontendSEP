@@ -1,7 +1,7 @@
 <template>
   <div>
     <client-only>
-      <Navbar />
+      <Navbar design="default" />
       <nuxt />
       <Footer />
     </client-only>

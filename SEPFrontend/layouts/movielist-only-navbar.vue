@@ -1,7 +1,7 @@
 <template>
   <div>
     <client-only>
-      <Navbar design="default" />
+      <Navbar design="movielist" />
       <nuxt />
     </client-only>
   </div>

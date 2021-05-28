@@ -3,13 +3,7 @@
     <div class="container">
       <div class="overlay"></div>
       <div class="video-wrapper">
-        <video
-          class="video-background"
-          autoplay
-          muted
-          loop
-          poster="../assets/images/video-wall-palceholder.jpg"
-        >
+        <video class="video-background" autoplay muted loop>
           <source
             src="../assets/videos/video wall lighter.mp4"
             type="video/mp4"
