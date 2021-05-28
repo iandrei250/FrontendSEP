@@ -41,9 +41,6 @@ export default {
   ],
 
    // https://axios.nuxtjs.org/options
-   axios: {
-    proxy: true
-  },
 
   // '/api/': { target: 'https://viaucsep6group1.azurewebsites.net/Movies/mostPopular', pathRewrite: { '^/api/': '' } },
 

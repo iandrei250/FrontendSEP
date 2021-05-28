@@ -19,6 +19,28 @@ export default {
     Spotlight,
     TopRated
   },
+  mounted() {
+    this.getData();
+  },
+  methods: {
+    async getData() {
+      var axios = require("axios");
+      let data;
+      await axios
+        .get("https://viaucsep6group1.azurewebsites.net/Movies/mostPopular")
+        .then(res => {
+          data = res.data;
+        });
+
+      // var message = "";
+
+      // movies.forEach(movie => {
+      //   message += movie.title + "\n";
+      // });
+
+      console.log(data);
+    }
+  },
   layout: "default"
 };
 </script>
