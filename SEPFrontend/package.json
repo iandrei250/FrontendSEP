@@ -10,7 +10,10 @@
   },
   "dependencies": {
     "@nuxtjs/axios": "^5.13.5",
+    "@nuxtjs/dotenv": "^1.4.1",
+    "@nuxtjs/proxy": "^2.1.0",
     "core-js": "^3.9.1",
+    "cors-anywhere": "^0.4.4",
     "fs": "0.0.1-security",
     "less-loader": "^5.0.0",
     "net": "^1.0.2",

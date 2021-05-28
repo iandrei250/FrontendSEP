@@ -80,9 +80,7 @@ export default {
       var axios = require("axios");
       let data;
       await axios
-        .get(
-          "https://cors-anywhere.herokuapp.com/https://viaucsep6group1.azurewebsites.net/Movies/mostPopular"
-        )
+        .get("https://viaucsep6group1.azurewebsites.net/Movies/mostPopular")
         .then(res => {
           data = res.data;
         });
