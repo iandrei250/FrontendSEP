@@ -31,6 +31,7 @@
 
 <script>
 import Navbar from "../components/Navbar";
+import axios from "axios";
 export default {
   data() {
     return {
@@ -76,19 +77,23 @@ export default {
     },
 
     async getData() {
-      await this.$axios
-        .get("https://viaucsep6group1.azurewebsites.net/Movies/mostPopular")
+      var axios = require("axios");
+      let data;
+      await axios
+        .get(
+          "https://cors-anywhere.herokuapp.com/https://viaucsep6group1.azurewebsites.net/Movies/mostPopular"
+        )
         .then(res => {
-          this.movies = res.data;
+          data = res.data;
         });
 
-      var message = "";
+      // var message = "";
 
-      movies.forEach(movie => {
-        message += movie.title + "\n";
-      });
+      // movies.forEach(movie => {
+      //   message += movie.title + "\n";
+      // });
 
-      console.log(message);
+      console.log(data);
     }
   }
 };
