@@ -50,9 +50,12 @@ export default {
         .get("https://viaucsep6group1.azurewebsites.net/Movies/mostPopular")
         .then(res => {
           for (let i = 1; i <= 3; i++) {
+            if (this.popularMovies.length === 3) break;
             movie = res.data[Math.floor(Math.random() * res.data.length)];
             if (this.popularMovies.indexOf(movie) < 0) {
               this.popularMovies.push(movie);
+            } else {
+              i = 1;
             }
           }
         });
