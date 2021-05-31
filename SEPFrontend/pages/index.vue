@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <Hero />
-    <NewestMovies />
+    <PopularMovies />
     <Spotlight />
     <TopRated />
   </div>
@@ -9,13 +9,13 @@
 
 <script>
 import Hero from "../components/Hero.vue";
-import NewestMovies from "../components/NewestMovies.vue";
+import PopularMovies from "../components/PopularMovies.vue";
 import Spotlight from "../components/Spotlight.vue";
 import TopRated from "../components/TopRated.vue";
 export default {
   components: {
     Hero,
-    NewestMovies,
+    PopularMovies,
     Spotlight,
     TopRated
   },

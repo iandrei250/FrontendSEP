@@ -1,21 +1,26 @@
 <template>
   <section>
     <div class="container">
-      <div class="featured-title">Newest Movies</div>
+      <div class="featured-title">Popular Movies</div>
       <div class="featured-container">
         <div
           id="featured-solutions"
-          v-for="solution in solutions"
-          :key="solution.key"
+          v-for="movie in popularMovies"
+          :key="movie.key"
         >
           <div class="image-holder">
             <div class="image">
-              <img src="../assets/images/pepe.jpg" alt="featured image" />
+              <img
+                :src="
+                  `http://image.tmdb.org/t/p/original/${movie.backdrop_path}`
+                "
+                alt="featured image"
+              />
             </div>
           </div>
           <div class="item-info-holder">
-            <div class="title-text">{{ solution.title }}</div>
-            <div class="description">{{ solution.description }}</div>
+            <div class="title-text">{{ movie.title }}</div>
+            <div class="description">{{ movie.overview }}</div>
             <div class="read-more">
               <nuxt-link class="interactive-button" to="#">Read More</nuxt-link>
             </div>
@@ -30,24 +35,28 @@
 export default {
   data() {
     return {
-      solutions: [
-        {
-          title: "Lorem Ipsum Dolor",
-          description:
-            " Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse a consectetur felis. Donec mollis, ligula nec dapibus elementum, nisi ligula tincidunt sapien, at tincidunt tellus ex eu enim. Pellentesque feugiat aliquam egestas"
-        },
-        {
-          title: "Lorem Ipsum Dolor",
-          description:
-            " Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse a consectetur felis. Donec mollis, ligula nec dapibus elementum, nisi ligula tincidunt sapien, at tincidunt tellus ex eu enim. Pellentesque feugiat aliquam egestas"
-        },
-        {
-          title: "Lorem Ipsum Dolor",
-          description:
-            " Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse a consectetur felis. Donec mollis, ligula nec dapibus elementum, nisi ligula tincidunt sapien, at tincidunt tellus ex eu enim. Pellentesque feugiat aliquam egestas"
-        }
-      ]
+      popularMovies: []
     };
+  },
+
+  mounted() {
+    this.getData();
+  },
+
+  methods: {
+    async getData() {
+      let movie;
+      await this.$axios
+        .get("https://viaucsep6group1.azurewebsites.net/Movies/mostPopular")
+        .then(res => {
+          for (let i = 1; i <= 3; i++) {
+            movie = res.data[Math.floor(Math.random() * res.data.length)];
+            if (this.popularMovies.indexOf(movie) < 0) {
+              this.popularMovies.push(movie);
+            }
+          }
+        });
+    }
   }
 };
 </script>
@@ -77,6 +86,7 @@ export default {
 
 #featured-solutions {
   // border: 1px solid black;
+  position: relative;
   border-radius: 10px;
   display: flex;
   flex-flow: column;
@@ -89,10 +99,15 @@ export default {
   .title-text {
     text-align: center;
     padding: 8px;
+    font-size: 24px;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
   }
 
   .description {
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     text-align: center;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-size: 12px;

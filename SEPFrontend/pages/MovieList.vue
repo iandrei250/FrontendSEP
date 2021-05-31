@@ -4,8 +4,8 @@
     <div class="list-container">
       <div class="search-container">
         <div class="searchbar">
-          <input type="text" placeholder="Search.." name="search" />
-          <button @click="doNothing">
+          <input type="text" placeholder="Search.." name="search" id="search" />
+          <button @click="searchForMovies">
             <div>
               <svg class="svg-icon" viewBox="0 0 20 20">
                 <path
@@ -19,9 +19,12 @@
       <div class="header">
         <p>Find your movie</p>
       </div>
-      <div class="movie-wrapper">
+      <div class="movie-wrapper" id="movie-wrapper">
         <div class="movie" v-for="movie in movies" :key="movie.id">
-          <img src="../assets/images/spooder.jpg" alt="Movie image" />
+          <img
+            :src="`http://image.tmdb.org/t/p/original/${movie.backdrop_path}`"
+            alt="Movie image"
+          />
           <div class="movie-title">{{ movie.title }}</div>
         </div>
       </div>
@@ -31,36 +34,12 @@
 
 <script>
 import Navbar from "../components/Navbar";
-import axios from "axios";
+import Vue from "vue";
+
 export default {
   data() {
     return {
-      movies: [
-        {
-          title: "Movie title",
-          image: "/assets/images/pepe.jpg"
-        },
-        {
-          title: "Movie title",
-          image: "/assets/images/pepe.jpg"
-        },
-        {
-          title: "Movie title",
-          image: "/assets/images/pepe.jpg"
-        },
-        {
-          title: "Movie title",
-          image: "/assets/images/pepe.jpg"
-        },
-        {
-          title: "Movie title",
-          image: "/assets/images/pepe.jpg"
-        },
-        {
-          title: "Movie title",
-          image: "/assets/images/pepe.jpg"
-        }
-      ]
+      movies: []
     };
   },
   components: {
@@ -72,26 +51,46 @@ export default {
     this.getData();
   },
   methods: {
-    doNothing() {
-      alert("Hiiiyaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+    async searchForMovies() {
+      var searchedMovie = document.getElementById("search").value;
+      let movieSuggestions = [];
+      let id = [];
+      await this.$axios
+        .get(
+          `https://viaucsep6group1.azurewebsites.net/Search?searchText=${searchedMovie}&searchType=2`
+        )
+        .then(res => (movieSuggestions = res.data));
+
+      movieSuggestions.forEach(movie => {
+        let splitMovie = movie.split(", ");
+        id.push(splitMovie[1]);
+      });
+
+      id.forEach(movieId => {
+        this.movies.push(this.searchWithId(movieId));
+      });
+
+      this.$forceUpdate();
     },
 
     async getData() {
-      var axios = require("axios");
-      let data;
-      await axios
-        .get("https://viaucsep6group1.azurewebsites.net/Movies/mostPopular")
-        .then(res => {
-          data = res.data;
-        });
+      if (this.movies.length === 0) {
+        await this.$axios
+          .get("https://viaucsep6group1.azurewebsites.net/Movies/mostPopular")
+          .then(res => {
+            this.movies = res.data;
+          });
+      }
+    },
 
-      // var message = "";
+    async searchWithId(id) {
+      let movie;
 
-      // movies.forEach(movie => {
-      //   message += movie.title + "\n";
-      // });
+      await this.$axios
+        .get(`https://viaucsep6group1.azurewebsites.net/Movies?id=${id}`)
+        .then(res => (movie = res.data));
 
-      console.log(data);
+      return movie;
     }
   }
 };
@@ -177,26 +176,35 @@ body {
   display: flex;
   flex-wrap: wrap;
   color: white;
-  position: relative;
   align-items: center;
   justify-content: space-evenly;
+  margin-bottom: 200px;
   .movie {
     position: relative;
-    top: 15%;
+    top: 200px;
     flex-basis: 34.5%;
+    min-width: 528px !important;
+    min-height: 360px !important;
+    margin-bottom: 80px;
 
     img {
-      width: 528px;
-      height: 360px;
+      box-shadow: 0 0 4px 4px #52515124;
+      width: 100%;
+      height: 100%;
       object-fit: cover;
+      position: absolute;
     }
 
     .movie-title {
+      display: flex;
       color: white;
-      top: -230px;
-      left: 150px;
+      // top: -230px;
+      // left: 150px;
+      align-items: center;
+      justify-content: center;
       font-size: 36px;
-      position: relative;
+      position: absolute;
+      cursor: pointer;
     }
   }
 }

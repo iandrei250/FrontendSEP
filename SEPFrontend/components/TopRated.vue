@@ -4,10 +4,16 @@
       <div class="title">Top Rated Movies</div>
       <div class="top-rated-container">
         <div v-for="movie in topRated" :key="movie.id" class="top-movie">
-          <div class="movie-image"></div>
-          <div class="overlay"></div>
+          <div class="movie-image">
+            <div class="overlay"></div>
+            <img
+              :src="`http://image.tmdb.org/t/p/original/${movie.backdrop_path}`"
+              alt="Movie image"
+            />
+          </div>
+
           <div class="movie-title">{{ movie.title }}</div>
-          <div class="movie-description">{{ movie.description }}</div>
+          <div class="movie-description">{{ movie.overview }}</div>
           <div class="button-holder">
             <nuxt-link class="interactive-button" to="#">Read More</nuxt-link>
           </div>
@@ -21,24 +27,26 @@
 export default {
   data() {
     return {
-      topRated: [
-        {
-          title: "Movie",
-          description:
-            "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna."
-        },
-        {
-          title: "Movie",
-          description:
-            "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna."
-        },
-        {
-          title: "Movie",
-          description:
-            "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna."
-        }
-      ]
+      topRated: []
     };
+  },
+  mounted() {
+    this.getData();
+  },
+
+  methods: {
+    async getData() {
+      let movie;
+      await this.$axios
+        .get("https://viaucsep6group1.azurewebsites.net/Movies/topRated")
+        .then(res => {
+          for (let i = 1; i <= 3; i++) {
+            movie = res.data[Math.floor(Math.random() * res.data.length)];
+
+            this.topRated.push(movie);
+          }
+        });
+    }
   }
 };
 </script>
@@ -80,14 +88,13 @@ section {
   border: 1px solid black;
   height: 323px;
   width: 25%;
-  background: url("../assets/images/spooder.jpg") 50% 70% no-repeat;
   background-size: cover;
   box-shadow: 0 0 4px 4px #52515124;
   border-radius: 8px;
 }
 
 .movie-title {
-  padding: 24px;
+  margin-top: 25px;
   font-size: 24px;
   font-weight: 400;
   z-index: 2;
@@ -113,5 +120,11 @@ section {
   opacity: 0.3;
   background: rgb(0, 0, 0);
   z-index: 1;
+}
+
+.movie-image {
+  position: absolute;
+  width: 100%;
+  height: 100%;
 }
 </style>

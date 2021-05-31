@@ -36,8 +36,6 @@ export default {
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     '@nuxtjs/axios',
-    '@nuxtjs/proxy',
-    '@nuxtjs/dotenv'
   ],
 
    // https://axios.nuxtjs.org/options
@@ -51,5 +49,9 @@ export default {
         ['@babel/plugin-proposal-private-methods', { loose: true }]
       ]
     }
+  },
+
+  server: {
+    host: '10.10.23.187'
   }
 }
