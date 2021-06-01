@@ -101,6 +101,10 @@ export default {
 
   .title-text {
     text-align: center;
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     padding: 8px;
     font-size: 24px;
     font-family: Verdana, Geneva, Tahoma, sans-serif;

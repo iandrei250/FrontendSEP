@@ -22,6 +22,16 @@
       <div class="movie-wrapper" id="movie-wrapper">
         <div class="movie" v-for="movie in movies" :key="movie.id">
           <img
+            v-if="
+              movie.backdrop_path === null || movie.backdrop_path === undefined
+            "
+            class="image"
+            src="../assets/images/No_Image_Available.jpg"
+            alt="Movie image"
+          />
+          <nuxt-img
+            v-else
+            class="image"
             :src="`http://image.tmdb.org/t/p/original/${movie.backdrop_path}`"
             alt="Movie image"
           />
@@ -34,7 +44,6 @@
 
 <script>
 import Navbar from "../components/Navbar";
-import Vue from "vue";
 
 export default {
   data() {
@@ -51,29 +60,28 @@ export default {
     this.getData();
   },
   methods: {
-    async searchForMovies() {
+    searchForMovies() {
       var searchedMovie = document.getElementById("search").value;
-      let movieSuggestions = [];
-      let id = [];
-      await this.$axios
-        .get(
-          `https://viaucsep6group1.azurewebsites.net/Search?searchText=${searchedMovie}&searchType=2`
-        )
-        .then(res => (movieSuggestions = res.data));
+      var today = new Date();
+      var dd = String(today.getDate()).padStart(2, "0");
+      var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
+      var yyyy = today.getFullYear();
 
-      movieSuggestions.forEach(movie => {
-        let splitMovie = movie.split(", ");
-        id.push(splitMovie[1]);
-      });
-
-      id.forEach(movieId => {
-        this.movies.push(this.searchWithId(movieId));
-      });
-
-      this.$forceUpdate();
+      today = mm + "/" + dd + "/" + yyyy;
+      document.cookie = `search=${searchedMovie}; expires=${today} path="/pages/MovieList.vue"`;
+      window.location.reload();
     },
 
-    async getData() {
+    getData() {
+      var cookie = this.getCookie("search");
+
+      if (cookie === null) {
+        this.getDefaultData();
+      } else {
+        this.getDataFromCookie(cookie);
+      }
+    },
+    async getDefaultData() {
       if (this.movies.length === 0) {
         await this.$axios
           .get("https://viaucsep6group1.azurewebsites.net/Movies/mostPopular")
@@ -83,29 +91,66 @@ export default {
       }
     },
 
-    async searchWithId(id) {
-      let movie;
+    async getDataFromCookie(value) {
+      var moviesSearch = [];
 
       await this.$axios
-        .get(`https://viaucsep6group1.azurewebsites.net/Movies?id=${id}`)
-        .then(res => (movie = res.data));
+        .get(
+          `https://viaucsep6group1.azurewebsites.net/Search?searchText=${value}&searchType=2`
+        )
+        .then(res => {
+          moviesSearch = res.data;
+        });
 
-      return movie;
+      moviesSearch.forEach(movie => {
+        var id = movie.split(", ")[1];
+        this.searchMovieById(id);
+      });
+    },
+
+    async searchMovieById(id) {
+      await this.$axios
+        .get(`https://viaucsep6group1.azurewebsites.net/Movies?id=${id}`)
+        .then(res => {
+          if (res.data.tmdbMovie === null) {
+            this.movies.push(res.data.movie);
+          } else {
+            this.movies.push(res.data.tmdbMovie);
+          }
+          console.log(res.data);
+        });
+
+      this.movies.forEach(movie => {
+        if (!("backdrop_path" in movie)) {
+          movie.backdrop_path = null;
+        } else {
+          return;
+        }
+      });
+    },
+    getCookie(name) {
+      var dc = document.cookie;
+      var prefix = name + "=";
+      var begin = dc.indexOf("; " + prefix);
+      if (begin == -1) {
+        begin = dc.indexOf(prefix);
+        if (begin != 0) return null;
+      } else {
+        begin += 2;
+        var end = document.cookie.indexOf(";", begin);
+        if (end == -1) {
+          end = dc.length;
+        }
+      }
+      // because unescape has been deprecated, replaced with decodeURI
+      //return unescape(dc.substring(begin + prefix.length, end));
+      return decodeURI(dc.substring(begin + prefix.length, end));
     }
   }
 };
 </script>
 
 <style lang="scss" scoped>
-// .overlay {
-//   width: 100%;
-//   height: 100%;
-//   position: absolute;
-//   opacity: 0.7;
-//   background: rgb(0, 0, 0);
-//   z-index: 2;
-// }
-
 body {
   padding: 0px !important;
   margin: 0px !important;
@@ -187,7 +232,7 @@ body {
     min-height: 360px !important;
     margin-bottom: 80px;
 
-    img {
+    .image {
       box-shadow: 0 0 4px 4px #52515124;
       width: 100%;
       height: 100%;
@@ -197,7 +242,7 @@ body {
 
     .movie-title {
       display: flex;
-      color: white;
+      color: rgb(184, 103, 103);
       // top: -230px;
       // left: 150px;
       align-items: center;
