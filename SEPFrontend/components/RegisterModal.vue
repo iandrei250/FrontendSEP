@@ -25,6 +25,13 @@
               />
             </div>
             <input
+              type="text"
+              id="username"
+              name="username"
+              placeholder="Username"
+              ref="username"
+            />
+            <input
               type="password"
               id="password"
               name="password"
@@ -42,14 +49,17 @@
             <input class="birthday" type="date" id="birthday" name="birthday" />
             <div class="country-dropdown">
               <vue-select
+                id="country"
                 :options="items"
                 class="dropdown"
                 placeholder="Country"
-              ></vue-select>
+                :reduce="country => (selectedCountry = country)"
+              >
+              </vue-select>
             </div>
 
             <div class="buttons-container">
-              <button class="button" @click="login">
+              <button class="button" @click="register">
                 Register
               </button>
               <button class="button" @click="close">
@@ -81,6 +91,7 @@ export default {
 
   data() {
     return {
+      selectedCountry: "",
       showModal: false,
       items: [
         "Afghanistan",
@@ -305,10 +316,45 @@ export default {
       window.onscroll = function() {};
     },
 
-    login() {
-      var user = document.getElementById("username").value;
+    async register() {
+      var firstName = document.getElementById("first-name").value;
+      var lastName = document.getElementById("last-name").value;
+      var username = document.getElementById("username").value;
       var pass = document.getElementById("password").value;
-      alert(user + "\n" + pass);
+      var email = document.getElementById("email").value;
+      var birthday = document.getElementById("birthday").value;
+      var birthdayDate = new Date(birthday);
+      var country = this.selectedCountry;
+
+      var user = {
+        name: firstName + " " + lastName,
+        username: username,
+        password: pass,
+        email: email,
+        birthday: birthday,
+        country: country
+      };
+
+      let res = await this.$axios.post(
+        "https://viaucsep6group1.azurewebsites.net/Auth/Register",
+        user
+      );
+
+      // console.log(
+      //   firstName +
+      //     "\n" +
+      //     lastName +
+      //     "\n" +
+      //     pass +
+      //     "\n" +
+      //     email +
+      //     "\n" +
+      //     birthday +
+      //     "\n" +
+      //     country
+      // );
+
+      console.log(res.data);
     }
   }
 };
@@ -413,6 +459,8 @@ export default {
   border: 2px solid #3e3e3e;
   text-align: left;
   z-index: 99;
+  outline: none;
+  cursor: pointer;
 }
 
 .buttons-container {

@@ -13,7 +13,6 @@
         <nuxt-link class="navbar-item" to="/">Home</nuxt-link>
         <nuxt-link class="navbar-item" to="/movie">Movie</nuxt-link>
         <nuxt-link class="navbar-item" to="/profile">Profile</nuxt-link>
-        <nuxt-link class="navbar-item" to="#">Register</nuxt-link>
         <nuxt-link class="navbar-item" to="/movielist">Movies</nuxt-link>
       </div>
       <div class="login-btn" @click="openLogin()">
