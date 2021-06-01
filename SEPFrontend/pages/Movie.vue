@@ -1,21 +1,27 @@
 <template>
   <div class="container">
     <div class="movie-image">
-      <img src="../assets/images/spooder.jpg" alt="Movie image" />
+      <img
+        v-if="movie.backdrop_path != null"
+        :src="`http://image.tmdb.org/t/p/original/${movie.backdrop_path}`"
+        alt="Movie image"
+      />
+      <img
+        v-else
+        src="../assets/images/No_Image_Available.jpg"
+        alt="Movie image"
+      />
     </div>
     <div class="movie-header">
-      <div class="category">Movie Category</div>
-      <div class="title">Movie Title</div>
+      <div class="title">{{ this.movie.title }}</div>
     </div>
     <div class="movie-overview">
       <div class="overview-text">
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Aut doloremque
-        necessitatibus, fuga asperiores doloribus dolorem odio obcaecati error
-        reiciendis neque soluta rerum ad similique consequatur quam. Explicabo,
-        voluptate necessitatibus corrupti tempore vero a animi. Expedita illo
-        labore, eum, quis illum fugiat, in consequatur laudantium totam dolores
-        magnam ut quisquam nihil.
+        {{ this.movie.overview }}
       </div>
+    </div>
+    <div class="release-date">
+      Release date : {{ formatDate(movie.release_date) }}
     </div>
     <div class="ratings-container">
       <div class="svg-icon">
@@ -32,13 +38,16 @@
           </svg>
         </div>
       </div>
-      <div class="ratings">Rating:</div>
+      <div class="ratings">Rating: {{ movie.vote_average }}/10</div>
     </div>
     <hr class="line-separator" />
     <div class="cast">
       <div class="cast-header">Cast1 :</div>
       <div class="cast-container">
-        <div class="actor" v-for="actor in actors" :key="actor.key">
+        <div v-if="actors.length == 0" class="no-data">
+          No data found to display
+        </div>
+        <div v-else class="actor" v-for="actor in actors" :key="actor.key">
           <div class="actor-image">
             <img src="../assets/images/pepe.jpg" alt="Actor profile image" />
           </div>
@@ -48,7 +57,15 @@
 
       <div class="directors-header">Directors:</div>
       <div class="directors-container">
-        <div class="director" v-for="director in directors" :key="director.key">
+        <div v-if="directors.length == 0" class="no-data">
+          No data found to display
+        </div>
+        <div
+          v-else
+          class="director"
+          v-for="director in directors"
+          :key="director.key"
+        >
           <div class="director-image">
             <img
               src="../assets/images/spooder.jpg"
@@ -65,78 +82,74 @@
 export default {
   data() {
     return {
-      actors: [
-        {
-          name: "Actor name",
-          image: "Actor image"
-        },
-        {
-          name: "Actor name",
-          image: "Actor image"
-        },
-        {
-          name: "Actor name",
-          image: "Actor image"
-        },
-        {
-          name: "Actor name",
-          image: "Actor image"
-        },
-        {
-          name: "Actor name",
-          image: "Actor image"
-        },
-        {
-          name: "Actor name",
-          image: "Actor image"
-        },
-        {
-          name: "Actor name",
-          image: "Actor image"
-        },
-        {
-          name: "Actor name",
-          image: "Actor image"
-        },
-        {
-          name: "Actor name",
-          image: "Actor image"
-        },
-        {
-          name: "Actor name",
-          image: "Actor image"
-        },
-        {
-          name: "Actor name",
-          image: "Actor image"
-        }
-      ],
-
-      directors: [
-        {
-          name: "Director name",
-          image: "Director image"
-        },
-        {
-          name: "Director name",
-          image: "Director image"
-        },
-        {
-          name: "Director name",
-          image: "Director image"
-        },
-        {
-          name: "Director name",
-          image: "Director image"
-        },
-        {
-          name: "Director name",
-          image: "Director image"
-        }
-      ]
+      movieId: 0,
+      movie: {},
+      actors: [],
+      directors: []
     };
   },
-  layout: "only-navbar"
+  layout: "only-navbar",
+  mounted() {
+    this.getMovieData();
+  },
+
+  methods: {
+    async getMovieData() {
+      var cookie = this.getCookie("search");
+      this.movieId = this.$route.query.movie;
+      console.log(this.movieId);
+      if (cookie === null) {
+        await this.$axios
+          .get("https://viaucsep6group1.azurewebsites.net/Movies/mostPopular")
+          .then(res => {
+            // console.log(res.data[1].id);
+            res.data.forEach(element => {
+              if (id == element.id) {
+                this.movie = element;
+                console.log(this.movie);
+              }
+            });
+          });
+      } else {
+        this.$axios
+          .get(
+            `https://viaucsep6group1.azurewebsites.net/Movies?id=${this.movieId}`
+          )
+          .then(res => {
+            if (res.data.tmdbMovie == null) {
+              this.movie = res.data.movie;
+              console.log(this.movie);
+            } else if (res.data.tmdbMovie != null) {
+              this.movie = res.data.tmdbMovie;
+              console.log(this.movie);
+            }
+          });
+      }
+    },
+    getCookie(name) {
+      var dc = document.cookie;
+      var prefix = name + "=";
+      var begin = dc.indexOf("; " + prefix);
+      if (begin == -1) {
+        begin = dc.indexOf(prefix);
+        if (begin != 0) return null;
+      } else {
+        begin += 2;
+        var end = document.cookie.indexOf(";", begin);
+        if (end == -1) {
+          end = dc.length;
+        }
+      }
+      // because unescape has been deprecated, replaced with decodeURI
+      //return unescape(dc.substring(begin + prefix.length, end));
+      return decodeURI(dc.substring(begin + prefix.length, end));
+    },
+
+    formatDate(date) {
+      var dateToDisplay = new Date(date);
+      return dateToDisplay.toUTCString();
+    }
+  }
 };
 </script>
 
@@ -186,7 +199,7 @@ body {
   justify-content: center;
 
   .overview-text {
-    font-size: 40px;
+    font-size: 32px;
     width: 50%;
     letter-spacing: 0px;
     text-align: justify;
@@ -294,5 +307,25 @@ body {
   font-size: 40px;
   font-weight: 550;
   letter-spacing: 1px;
+}
+
+.release-date {
+  width: 100%;
+  display: flex;
+  position: relative;
+  align-items: center;
+  left: 307px;
+  margin-top: 20px;
+  margin-bottom: 30px;
+  font-weight: 550;
+  font-size: 21px;
+  text-align: justify;
+  top: 10px;
+}
+.no-data {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  padding-left: 12px;
+  font-size: 24px;
 }
 </style>

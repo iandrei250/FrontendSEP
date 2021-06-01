@@ -9,11 +9,11 @@
           <h1>Sign In</h1>
           <div class="login-form">
             <input
-              type="text"
-              id="username"
-              name="username"
-              placeholder="Username"
-              ref="username"
+              type="email"
+              id="email"
+              name="email"
+              placeholder="Email"
+              ref="email"
             />
             <input
               type="password"
@@ -63,10 +63,31 @@ export default {
       window.onscroll = function() {};
     },
 
-    login() {
-      var user = document.getElementById("username").value;
+    async login() {
+      var email = document.getElementById("email").value;
       var pass = document.getElementById("password").value;
-      alert(user + "\n" + pass);
+
+      var user = {
+        email: email,
+        password: pass
+      };
+
+      let res = await this.$axios.post(
+        "https://viaucsep6group1.azurewebsites.net/Auth/Login",
+        user
+      );
+
+      var today = new Date();
+      var dd = String(today.getDate()).padStart(2, "0");
+      var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
+      var yyyy = today.getFullYear();
+
+      today = mm + "/" + dd + "/" + yyyy;
+
+      document.cookie = `authToken=${res.data}; expires=${today}`;
+      window.location.reload();
+
+      console.log(res.data);
     }
   }
 };

@@ -20,7 +20,17 @@
         <p>Find your movie</p>
       </div>
       <div class="movie-wrapper" id="movie-wrapper">
-        <div class="movie" v-for="movie in movies" :key="movie.id">
+        <div class="movie" v-for="movie in movies" :key="movie.name">
+          <nuxt-link
+            v-if="movie.tmdbMovie == null"
+            class="overlay"
+            :to="`/movie?movie=${movie.id}`"
+          ></nuxt-link>
+          <nuxt-link
+            v-else
+            class="overlay"
+            :to="`/movie?movie=${movie.tmdbMovie.id}`"
+          ></nuxt-link>
           <img
             v-if="
               movie.backdrop_path === null || movie.backdrop_path === undefined
@@ -35,7 +45,9 @@
             :src="`http://image.tmdb.org/t/p/original/${movie.backdrop_path}`"
             alt="Movie image"
           />
-          <div class="movie-title">{{ movie.title }}</div>
+          <div class="movie-title">
+            {{ movie.title }}
+          </div>
         </div>
       </div>
     </div>
@@ -112,21 +124,18 @@ export default {
       await this.$axios
         .get(`https://viaucsep6group1.azurewebsites.net/Movies?id=${id}`)
         .then(res => {
-          if (res.data.tmdbMovie === null) {
-            this.movies.push(res.data.movie);
-          } else {
-            this.movies.push(res.data.tmdbMovie);
-          }
           console.log(res.data);
-        });
+          if (res.data.tmdbMovie == null) {
+            this.movies.push(res.data.movie);
+          } else if (res.data.tmdbMovie != null) {
+            var idToAdd = res.data.movie.id;
+            var objToAdd = res.data.tmdbMovie;
 
-      this.movies.forEach(movie => {
-        if (!("backdrop_path" in movie)) {
-          movie.backdrop_path = null;
-        } else {
-          return;
-        }
-      });
+            objToAdd.id = idToAdd;
+            this.movies.push(objToAdd);
+            console.log(objToAdd);
+          }
+        });
     },
     getCookie(name) {
       var dc = document.cookie;
@@ -250,6 +259,23 @@ body {
       font-size: 36px;
       position: absolute;
       cursor: pointer;
+    }
+
+    .overlay {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      background: black;
+      opacity: 0.1;
+      transition: all 0.5s ease;
+    }
+
+    &:hover {
+      .overlay {
+        z-index: 20;
+        transition: all 0.5s ease;
+        opacity: 0.3;
+      }
     }
   }
 }

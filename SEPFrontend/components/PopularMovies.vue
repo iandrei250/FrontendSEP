@@ -22,7 +22,11 @@
             <div class="title-text">{{ movie.title }}</div>
             <div class="description">{{ movie.overview }}</div>
             <div class="read-more">
-              <nuxt-link class="interactive-button" to="#">Read More</nuxt-link>
+              <nuxt-link
+                class="interactive-button"
+                :to="`/movie?param=${movie.id}`"
+                >Read More</nuxt-link
+              >
             </div>
           </div>
         </div>

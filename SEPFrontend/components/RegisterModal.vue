@@ -339,21 +339,6 @@ export default {
         "https://viaucsep6group1.azurewebsites.net/Auth/Register",
         user
       );
-
-      // console.log(
-      //   firstName +
-      //     "\n" +
-      //     lastName +
-      //     "\n" +
-      //     pass +
-      //     "\n" +
-      //     email +
-      //     "\n" +
-      //     birthday +
-      //     "\n" +
-      //     country
-      // );
-
       console.log(res.data);
     }
   }
