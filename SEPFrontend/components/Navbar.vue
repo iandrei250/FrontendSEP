@@ -23,15 +23,15 @@
 
       <div v-if="checkForLoggedInUser() == ``" class="button-container">
         <div class="auth-btn" @click="openLogin()">
-          <nuxt-link class="interactive-button" to="#">Login</nuxt-link>
+          <button class="interactive-button">Login</button>
         </div>
         <div class="auth-btn" @click="openRegister()">
-          <nuxt-link class="interactive-button" to="#">Register</nuxt-link>
+          <button class="interactive-button">Register</button>
         </div>
       </div>
       <div v-else>
         <div class="auth-btn" @click="logOut()">
-          <nuxt-link class="interactive-button" to="#">Log Out</nuxt-link>
+          <button class="interactive-button">Log Out</button>
         </div>
       </div>
     </nav>

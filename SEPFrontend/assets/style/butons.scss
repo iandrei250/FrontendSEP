@@ -6,9 +6,10 @@
   font-size: 24px;
   padding: 8px;
   text-align: center;
-  width: 100px;
+  width: 200px;
   transition: all 0.4s ease;
   border-radius: 4px;
+  cursor: pointer;
 
   &:hover {
     background: rgb(109, 48, 48);

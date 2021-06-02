@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    <Navbar class="navbar" design="movielist" />
     <div class="heading">
       Profile
     </div>
@@ -9,11 +10,21 @@
       </div>
       <div class="person">
         <div class="personal-data">
-          <div class="profile-item username"><h2>Username :</h2></div>
-          <div class="profile-item name"><h2>Name :</h2></div>
-          <div class="profile-item email"><h2>Email :</h2></div>
-          <div class="profile-item birthday"><h2>Birthday :</h2></div>
-          <div class="profile-item country"><h2>Country :</h2></div>
+          <div class="profile-item username">
+            <h2>Username : {{ user.username }}</h2>
+          </div>
+          <div class="profile-item name">
+            <h2>Name : {{ user.name }}</h2>
+          </div>
+          <div class="profile-item email">
+            <h2>Email : {{ user.email }}</h2>
+          </div>
+          <div class="profile-item birthday">
+            <h2>Birthday : {{ user.birthday }}</h2>
+          </div>
+          <div class="profile-item country">
+            <h2>Country : {{ user.country }}</h2>
+          </div>
         </div>
       </div>
     </div>
@@ -23,63 +34,98 @@
 
     <div class="movie-list">
       <div v-for="movie in movies" :key="movie.id" class="movie">
+        <img
+          v-if="movie.backdrop_path == null"
+          class="movie-background"
+          src="../assets/images/No_Image_Available.jpg"
+          alt="movie image"
+        />
+        <img
+          v-else
+          class="movie-background"
+          :src="`http://image.tmdb.org/t/p/original/${movie.backdrop_path}`"
+          alt="movie image"
+        />
         <div class="movie-title">{{ movie.title }}</div>
-        <div>{{ movie.description }}</div>
+        <div class="overview">{{ movie.overview }}</div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import index from "../store/index";
+import Navbar from "../components/Navbar";
 export default {
+  components: {
+    Navbar
+  },
   layout: "empty",
   data() {
     return {
       user: {},
-      movies: [
-        {
-          title: "Movie",
-          description:
-            "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna."
-        },
-        {
-          title: "Movie",
-          description:
-            "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna."
-        },
-        {
-          title: "Movie",
-          description:
-            "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna."
-        },
-        {
-          title: "Movie",
-          description:
-            "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna."
-        },
-        {
-          title: "Movie",
-          description:
-            "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna."
-        },
-        {
-          title: "Movie",
-          description:
-            "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna."
-        }
-      ]
+      movies: []
     };
   },
-
   mounted() {
-    this.getUserFromStorage();
+    this.getUser();
   },
-
   methods: {
-    getUserFromStorage() {
-      this.user = this.$store.getters["getSelectedJson"];
-      console.log(this.user);
+    async getUser() {
+      var authToken = this.getCookie("authToken");
+
+      await this.$axios
+        .get("https://viaucsep6group1.azurewebsites.net/User", {
+          headers: {
+            fromToken: authToken
+          }
+        })
+        .then(res => {
+          this.user = res.data;
+          this.movies = this.user.topLists[0].movies;
+        });
+
+      this.getImageForMovie();
+      console.log(this.movies);
+    },
+
+    async getImageForMovie() {
+      let dataToLoad;
+      for (let i = 0; i < this.movies.length; i++) {
+        await this.$axios
+          .get(
+            `https://viaucsep6group1.azurewebsites.net/Movies?id=${this.movies[i].id}`
+          )
+          .then(res => {
+            dataToLoad = res.data;
+          });
+        if (dataToLoad.tmdbMovie == null) {
+          this.movies[i].backdop_path = null;
+        } else {
+          this.movies[i].backdrop_path = dataToLoad.tmdbMovie.backdrop_path;
+          this.movies[i].overview = dataToLoad.tmdbMovie.overview;
+        }
+
+        console.log(this.movies[i].overview);
+      }
+    },
+
+    getCookie(name) {
+      var dc = document.cookie;
+      var prefix = name + "=";
+      var begin = dc.indexOf("; " + prefix);
+      if (begin == -1) {
+        begin = dc.indexOf(prefix);
+        if (begin != 0) return null;
+      } else {
+        begin += 2;
+        var end = document.cookie.indexOf(";", begin);
+        if (end == -1) {
+          end = dc.length;
+        }
+      }
+      // because unescape has been deprecated, replaced with decodeURI
+      //return unescape(dc.substring(begin + prefix.length, end));
+      return decodeURI(dc.substring(begin + prefix.length, end));
     }
   }
 };
@@ -173,9 +219,22 @@ body {
     width: 528px;
     height: 360px;
     box-shadow: 0 0 2px 2px #a2a2a224;
-    background: url("../assets/images/yoda.jpg");
-    color: white;
     margin-bottom: 15px;
+    position: relative;
+
+    .movie-background {
+      width: 100%;
+      height: 100%;
+      opacity: 0.8;
+      position: absolute;
+    }
+
+    .overview {
+      font-size: 20px;
+      font-weight: 600;
+      z-index: 2;
+      color: rgb(0, 0, 0);
+    }
   }
 }
 
@@ -197,8 +256,9 @@ body {
 
 .movie-title {
   padding: 24px;
-  font-size: 24px;
-  font-weight: 400;
+  font-size: 32px;
+  font-weight: 800;
   z-index: 2;
+  color: black;
 }
 </style>

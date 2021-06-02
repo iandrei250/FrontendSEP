@@ -11,6 +11,13 @@
         src="../assets/images/No_Image_Available.jpg"
         alt="Movie image"
       />
+      <button
+        class="interactive-button"
+        id="favourite"
+        @click="addToTopLists()"
+      >
+        Add to favourite
+      </button>
     </div>
     <div class="movie-header">
       <div class="title">{{ this.movie.title }}</div>
@@ -42,7 +49,7 @@
     </div>
     <hr class="line-separator" />
     <div class="cast">
-      <div class="cast-header">Cast1 :</div>
+      <div class="cast-header">Cast :</div>
       <div class="cast-container">
         <div v-if="actors.length == 0" class="no-data">
           No data found to display
@@ -103,7 +110,8 @@ export default {
       movieId: 0,
       movie: {},
       actors: [],
-      directors: []
+      directors: [],
+      movies: []
     };
   },
   layout: "only-navbar",
@@ -111,6 +119,7 @@ export default {
     this.getMovieData();
     this.getDirectors();
     this.getActors();
+    this.checkForAuthToFavourite();
     console.log(this.directors);
   },
 
@@ -126,6 +135,7 @@ export default {
             res.data.forEach(element => {
               if (this.movieId == element.id) {
                 this.movie = element;
+                console.log(this.movie.id);
               }
             });
           });
@@ -167,19 +177,21 @@ export default {
       return dateToDisplay.toUTCString();
     },
 
-    getDirectors() {
-      this.$axios
-        .get(
-          `https://viaucsep6group1.azurewebsites.net/Movies/directors?id=${this.movieId}`
-        )
-        .then(res => {
-          this.directors = res.data;
-        });
-
-      console.log(this.directors);
+    async getDirectors() {
+      try {
+        this.$axios
+          .get(
+            `https://viaucsep6group1.azurewebsites.net/Movies/directors?id=${this.movieId}`
+          )
+          .then(res => {
+            this.directors = res.data;
+          });
+      } catch (e) {
+        console.log(e.message);
+      }
     },
 
-    getActors() {
+    async getActors() {
       this.$axios
         .get(
           `https://viaucsep6group1.azurewebsites.net/Movies/stars?id=${this.movieId}`
@@ -189,6 +201,89 @@ export default {
         });
 
       console.log(this.actors);
+    },
+
+    checkForAuthToFavourite() {
+      var auth = this.getCookie("authToken");
+
+      if (auth != "") {
+        console.log(auth);
+        document.getElementById("favourite").classList.add("is-active");
+      }
+    },
+
+    async addToTopLists() {
+      var token = this.getCookie("authToken");
+
+      var id = token.split("=")[0];
+
+      let movie = {
+        id: this.movieId,
+        title: "",
+        year: 0
+      };
+
+      this.movies.push(movie);
+
+      var topListOption = {
+        id: 0,
+        name: "My list",
+        userId: id,
+        movies: this.movies
+      };
+
+      try {
+        let userWithData = {};
+
+        await this.$axios
+          .get(`https://viaucsep6group1.azurewebsites.net/User`, {
+            headers: { fromToken: token }
+          })
+          .then(res => {
+            userWithData = res.data;
+          });
+
+        if (userWithData.topLists.length == 0) {
+          var res = await this.$axios.post(
+            `https://viaucsep6group1.azurewebsites.net/Toplists`,
+            topListOption,
+            {
+              headers: {
+                token: token
+              }
+            }
+          );
+        } else {
+          userWithData.topLists.forEach(async topList => {
+            if (topList.name == topListOption.name) {
+              topListOption.id = topList.id;
+              this.movie.id = this.movieId;
+              topList.movies.push(this.movie);
+              topListOption.movies = topList.movies;
+
+              var res = await this.$axios.put(
+                `https://viaucsep6group1.azurewebsites.net/Toplists`,
+                topListOption,
+                { headers: { token: token } }
+              );
+            } else {
+              var res = await this.$axios.post(
+                `https://viaucsep6group1.azurewebsites.net/Toplists`,
+                topListOption,
+                {
+                  headers: {
+                    token: token
+                  }
+                }
+              );
+
+              console.log(res.data);
+            }
+          });
+        }
+      } catch (e) {
+        console.log(e.message);
+      }
     }
   }
 };
@@ -196,6 +291,7 @@ export default {
 
 <style lang="scss">
 @import url("https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300&display=swap");
+@import "../assets/style/butons.scss";
 body {
   margin: 0px !important;
   padding: 0px !important;
@@ -208,7 +304,32 @@ body {
 .movie-image {
   width: 100%;
   height: 600px;
+  position: relative;
+
+  .interactive-button {
+    z-index: 99;
+    position: absolute;
+    width: 200px;
+    bottom: 0;
+    visibility: hidden;
+    right: 0;
+    border-radius: 42px;
+    margin: 10px;
+
+    background: transparent;
+    border: 2px solid rgb(172, 45, 45);
+
+    &:hover {
+      background: rgb(172, 45, 45);
+    }
+
+    &.is-active {
+      visibility: visible;
+    }
+  }
   img {
+    z-index: 1;
+    position: absolute;
     width: 100%;
     height: 100%;
     object-fit: fill;
