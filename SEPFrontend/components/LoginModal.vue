@@ -23,7 +23,7 @@
               ref="password"
             />
             <div class="buttons-container">
-              <button class="button" @click="login">
+              <button class="button" @click="login" id="login">
                 Log In
               </button>
               <button class="button" @click="close">

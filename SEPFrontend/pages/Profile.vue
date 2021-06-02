@@ -31,10 +31,12 @@
 </template>
 
 <script>
+import index from "../store/index";
 export default {
   layout: "empty",
   data() {
     return {
+      user: {},
       movies: [
         {
           title: "Movie",
@@ -68,6 +70,17 @@ export default {
         }
       ]
     };
+  },
+
+  mounted() {
+    this.getUserFromStorage();
+  },
+
+  methods: {
+    getUserFromStorage() {
+      this.user = this.$store.getters["getSelectedJson"];
+      console.log(this.user);
+    }
   }
 };
 </script>

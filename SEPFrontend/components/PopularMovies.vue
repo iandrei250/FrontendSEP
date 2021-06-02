@@ -21,13 +21,6 @@
           <div class="item-info-holder">
             <div class="title-text">{{ movie.title }}</div>
             <div class="description">{{ movie.overview }}</div>
-            <div class="read-more">
-              <nuxt-link
-                class="interactive-button"
-                :to="`/movie?param=${movie.id}`"
-                >Read More</nuxt-link
-              >
-            </div>
           </div>
         </div>
       </div>
@@ -87,8 +80,9 @@ export default {
   text-align: center;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   font-size: 42px;
-  font-weight: 700;
+  font-weight: 600;
   padding: 22px;
+  margin-top: 50px;
 }
 
 #featured-solutions {

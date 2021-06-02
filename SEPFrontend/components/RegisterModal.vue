@@ -84,13 +84,20 @@
 <script>
 import vueSelect from "vue-select";
 import "vue-select/dist/vue-select.css";
+// import VueAlertify from "vue-alertify";
 export default {
+  watch: {
+    selected_json(user) {
+      this.$store.commit("setSelectedJson", user);
+    }
+  },
   components: {
     vueSelect
   },
 
   data() {
     return {
+      user: {},
       selectedCountry: "",
       showModal: false,
       items: [
@@ -323,7 +330,6 @@ export default {
       var pass = document.getElementById("password").value;
       var email = document.getElementById("email").value;
       var birthday = document.getElementById("birthday").value;
-      var birthdayDate = new Date(birthday);
       var country = this.selectedCountry;
 
       var user = {
@@ -339,7 +345,17 @@ export default {
         "https://viaucsep6group1.azurewebsites.net/Auth/Register",
         user
       );
+
       console.log(res.data);
+      console.log(res);
+
+      this.close();
+
+      if (res.status == 200) {
+        alert(`${res.data} You can log in now!`);
+      } else {
+        alert("Something went wrong, please try again later!");
+      }
     }
   }
 };

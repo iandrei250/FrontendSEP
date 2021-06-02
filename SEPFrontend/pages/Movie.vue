@@ -48,8 +48,17 @@
           No data found to display
         </div>
         <div v-else class="actor" v-for="actor in actors" :key="actor.key">
-          <div class="actor-image">
-            <img src="../assets/images/pepe.jpg" alt="Actor profile image" />
+          <div class="actor-image" v-if="actors.length != 0">
+            <img
+              v-if="actors.length != 0 || actors.profile_path == null"
+              :src="`http://image.tmdb.org/t/p/original/${actor.profile_path}`"
+              alt="Actor profile image"
+            />
+            <img
+              v-else
+              src="../assets/images/No_Image_Available.jpg"
+              alt="Actor profile image"
+            />
           </div>
           <div class="actor-name">{{ actor.name }}</div>
         </div>
@@ -68,7 +77,16 @@
         >
           <div class="director-image">
             <img
-              src="../assets/images/spooder.jpg"
+              v-if="directors.length == 0 || director.profile_path == null"
+              src="../assets/images/No_Image_Available.jpg"
+              alt="Director profile image"
+            />
+
+            <img
+              v-else
+              :src="
+                `http://image.tmdb.org/t/p/original/${director.profile_path}`
+              "
               alt="Director profile image"
             />
           </div>
@@ -91,6 +109,9 @@ export default {
   layout: "only-navbar",
   mounted() {
     this.getMovieData();
+    this.getDirectors();
+    this.getActors();
+    console.log(this.directors);
   },
 
   methods: {
@@ -102,11 +123,9 @@ export default {
         await this.$axios
           .get("https://viaucsep6group1.azurewebsites.net/Movies/mostPopular")
           .then(res => {
-            // console.log(res.data[1].id);
             res.data.forEach(element => {
-              if (id == element.id) {
+              if (this.movieId == element.id) {
                 this.movie = element;
-                console.log(this.movie);
               }
             });
           });
@@ -118,10 +137,8 @@ export default {
           .then(res => {
             if (res.data.tmdbMovie == null) {
               this.movie = res.data.movie;
-              console.log(this.movie);
             } else if (res.data.tmdbMovie != null) {
               this.movie = res.data.tmdbMovie;
-              console.log(this.movie);
             }
           });
       }
@@ -148,6 +165,30 @@ export default {
     formatDate(date) {
       var dateToDisplay = new Date(date);
       return dateToDisplay.toUTCString();
+    },
+
+    getDirectors() {
+      this.$axios
+        .get(
+          `https://viaucsep6group1.azurewebsites.net/Movies/directors?id=${this.movieId}`
+        )
+        .then(res => {
+          this.directors = res.data;
+        });
+
+      console.log(this.directors);
+    },
+
+    getActors() {
+      this.$axios
+        .get(
+          `https://viaucsep6group1.azurewebsites.net/Movies/stars?id=${this.movieId}`
+        )
+        .then(res => {
+          this.actors = res.data;
+        });
+
+      console.log(this.actors);
     }
   }
 };

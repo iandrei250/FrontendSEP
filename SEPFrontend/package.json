@@ -11,6 +11,7 @@
   "dependencies": {
     "@nuxtjs/axios": "^5.13.5",
     "@nuxtjs/proxy": "^2.1.0",
+    "alertifyjs": "^1.13.1",
     "core-js": "^3.9.1",
     "cors-anywhere": "^0.4.4",
     "fs": "0.0.1-security",
@@ -19,7 +20,9 @@
     "node-sass": "^4.14.1",
     "nuxt": "^2.7.0",
     "tls": "0.0.1",
-    "vue-select": "^3.11.2"
+    "vue-alertify": "^1.1.0",
+    "vue-select": "^3.11.2",
+    "vuex": "^3.6.2"
   },
   "devDependencies": {
     "@fortawesome/free-brands-svg-icons": "^5.15.3",

@@ -8,18 +8,31 @@
       role="navigation"
       aria-label="Main navigation"
     >
-      <div class="logo-title">Logo and title</div>
-      <div class="links">
+      <div class="logo-title">
+        <img src="../assets/images/logo.png" alt="logo" />
+      </div>
+      <div class="links" v-if="checkForLoggedInUser() == ``">
         <nuxt-link class="navbar-item" to="/">Home</nuxt-link>
-        <nuxt-link class="navbar-item" to="/movie">Movie</nuxt-link>
+        <nuxt-link class="navbar-item" to="/movielist">Movies</nuxt-link>
+      </div>
+      <div class="links" v-else>
+        <nuxt-link class="navbar-item" to="/">Home</nuxt-link>
         <nuxt-link class="navbar-item" to="/profile">Profile</nuxt-link>
         <nuxt-link class="navbar-item" to="/movielist">Movies</nuxt-link>
       </div>
-      <div class="login-btn" @click="openLogin()">
-        <nuxt-link class="interactive-button" to="#">Login</nuxt-link>
+
+      <div v-if="checkForLoggedInUser() == ``" class="button-container">
+        <div class="auth-btn" @click="openLogin()">
+          <nuxt-link class="interactive-button" to="#">Login</nuxt-link>
+        </div>
+        <div class="auth-btn" @click="openRegister()">
+          <nuxt-link class="interactive-button" to="#">Register</nuxt-link>
+        </div>
       </div>
-      <div class="login-btn" @click="openRegister()">
-        <nuxt-link class="interactive-button" to="#">Register</nuxt-link>
+      <div v-else>
+        <div class="auth-btn" @click="logOut()">
+          <nuxt-link class="interactive-button" to="#">Log Out</nuxt-link>
+        </div>
       </div>
     </nav>
   </div>
@@ -47,6 +60,43 @@ export default {
 
     openRegister() {
       this.$refs["register"].open();
+    },
+
+    checkForLoggedInUser() {
+      var userToken = this.getCookie("authToken");
+
+      return userToken;
+    },
+
+    logOut() {
+      var token = this.getCookie("authToken");
+
+      this.$axios.post(
+        "https://viaucsep6group1.azurewebsites.net/Auth/Logout",
+        token
+      );
+
+      document.cookie = "authToken=";
+      window.location.reload();
+    },
+
+    getCookie(name) {
+      var dc = document.cookie;
+      var prefix = name + "=";
+      var begin = dc.indexOf("; " + prefix);
+      if (begin == -1) {
+        begin = dc.indexOf(prefix);
+        if (begin != 0) return null;
+      } else {
+        begin += 2;
+        var end = document.cookie.indexOf(";", begin);
+        if (end == -1) {
+          end = dc.length;
+        }
+      }
+      // because unescape has been deprecated, replaced with decodeURI
+      //return unescape(dc.substring(begin + prefix.length, end));
+      return decodeURI(dc.substring(begin + prefix.length, end));
     }
   }
 };
@@ -71,10 +121,10 @@ nav {
     height: 100%;
   }
 
-  .login-btn {
+  .auth-btn {
     align-self: right;
-    width: 25%;
     height: 100%;
+    margin-right: 12px;
     display: flex;
     justify-content: center;
   }
@@ -103,6 +153,14 @@ nav {
   width: 25%;
   height: 100%;
   cursor: default;
+
+  img {
+    width: 120px;
+    height: 80px;
+  }
+}
+.button-container {
+  display: flex;
 }
 
 .navbar[design="default"] {

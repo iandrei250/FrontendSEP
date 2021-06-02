@@ -14,9 +14,6 @@
 
           <div class="movie-title">{{ movie.title }}</div>
           <div class="movie-description">{{ movie.overview }}</div>
-          <div class="button-holder">
-            <nuxt-link class="interactive-button" to="#">Read More</nuxt-link>
-          </div>
         </div>
       </div>
     </div>
@@ -103,7 +100,7 @@ section {
 .movie-description {
   z-index: 2;
   padding: 24px;
-  font-weight: 200;
+  font-weight: 600;
   letter-spacing: 0.5px;
 }
 
