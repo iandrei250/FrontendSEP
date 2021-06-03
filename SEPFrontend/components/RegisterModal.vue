@@ -341,21 +341,17 @@ export default {
         country: country
       };
 
-      let res = await this.$axios.post(
-        "https://viaucsep6group1.azurewebsites.net/Auth/Register",
-        user
-      );
-
-      console.log(res.data);
-      console.log(res);
-
-      this.close();
-
-      if (res.status == 200) {
+      try {
+        let res = await this.$axios.post(
+          "https://viaucsep6group1.azurewebsites.net/Auth/Register",
+          user
+        );
         alert(`${res.data} You can log in now!`);
-      } else {
+      } catch (e) {
         alert("Something went wrong, please try again later!");
       }
+
+      this.close();
     }
   }
 };

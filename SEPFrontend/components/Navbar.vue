@@ -83,7 +83,7 @@ export default {
       );
 
       document.cookie = "authToken=";
-      window.location.reload();
+      this.$router.push("/");
     },
 
     getCookie(name) {

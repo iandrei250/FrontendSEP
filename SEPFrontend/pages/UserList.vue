@@ -76,6 +76,14 @@ export default {
     },
     async getUser() {
       var userToSearch = this.getCookie("userToSearch");
+
+      if (userToSearch.includes(";")) {
+        userToSearch.split("; ").forEach(element => {
+          if (element.includes("=")) return;
+          userToSearch = element;
+        });
+      }
+      console.log(userToSearch);
       if (userToSearch.includes(";")) {
         userToSearh.split("; ").forEach(element => {
           if (element.includes("userToSearch")) {

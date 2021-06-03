@@ -72,22 +72,25 @@ export default {
         password: pass
       };
 
-      let res = await this.$axios.post(
-        "https://viaucsep6group1.azurewebsites.net/Auth/Login",
-        user
-      );
+      let res;
+      try {
+        res = await this.$axios.post(
+          "https://viaucsep6group1.azurewebsites.net/Auth/Login",
+          user
+        );
+        var today = new Date();
+        var dd = String(today.getDate()).padStart(2, "0");
+        var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
+        var yyyy = today.getFullYear();
 
-      var today = new Date();
-      var dd = String(today.getDate()).padStart(2, "0");
-      var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
-      var yyyy = today.getFullYear();
+        today = mm + "/" + dd + "/" + yyyy;
 
-      today = mm + "/" + dd + "/" + yyyy;
+        document.cookie = `authToken=${res.data}; expires=${today}`;
+      } catch (e) {
+        alert("Something went wrong, please try again !");
+      }
 
-      document.cookie = `authToken=${res.data}; expires=${today}`;
       window.location.reload();
-
-      console.log(res.data);
     }
   }
 };
