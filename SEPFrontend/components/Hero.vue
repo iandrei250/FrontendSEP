@@ -10,15 +10,13 @@
           />
         </video>
       </div>
-      <div class="text">Design is the silent ambassador of your brand</div>
+      <div class="text">Bringing Hollywood to your home</div>
       <div class="sub-text">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse a
-        consectetur felis. Donec mollis, ligula nec dapibus elementum, nisi
-        ligula tincidunt sapien, at tincidunt tellus ex eu enim. Pellentesque
-        feugiat aliquam egestas. Duis fringilla urna et quam viverra, consequat
-        sodales ex sagittis.
+        Talking about dreams is like talking about movies, since the cinema uses
+        the language of dreams; years can pass in a second, and you can hop from
+        one place to another. It's a language made of image. And in the real
+        cinema, every object and every light means something, as in a dream.
       </div>
-      <nuxt-link class="interactive-button" to="#">Contact</nuxt-link>
     </div>
   </section>
 </template>
@@ -53,7 +51,7 @@ export default {};
 }
 
 .sub-text {
-  font-size: 14px;
+  font-size: 18px;
   text-align: center;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   padding-bottom: 12px;

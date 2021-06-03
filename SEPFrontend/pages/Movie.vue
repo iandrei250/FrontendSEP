@@ -47,6 +47,7 @@
       </div>
       <div class="ratings">Rating: {{ movie.vote_average }}/10</div>
     </div>
+    <div class="amount">Amount of votes: {{ movie.vote_count }}</div>
     <hr class="line-separator" />
     <div class="cast">
       <div class="cast-header">Cast :</div>
@@ -57,7 +58,7 @@
         <div v-else class="actor" v-for="actor in actors" :key="actor.key">
           <div class="actor-image" v-if="actors.length != 0">
             <img
-              v-if="actors.length != 0 || actors.profile_path == null"
+              v-if="actors.length != 0 || actors.profile_path != null"
               :src="`http://image.tmdb.org/t/p/original/${actor.profile_path}`"
               alt="Actor profile image"
             />
@@ -229,7 +230,7 @@ export default {
         id: 0,
         name: "My list",
         userId: id,
-        movies: this.movies
+        movies: []
       };
 
       try {
@@ -253,19 +254,23 @@ export default {
               }
             }
           );
+          alert(res.data);
         } else {
           userWithData.topLists.forEach(async topList => {
             if (topList.name == topListOption.name) {
               topListOption.id = topList.id;
-              this.movie.id = this.movieId;
+              this.movie.id = parseInt(this.movieId);
               topList.movies.push(this.movie);
               topListOption.movies = topList.movies;
+              console.log(topListOption);
 
               var res = await this.$axios.put(
                 `https://viaucsep6group1.azurewebsites.net/Toplists`,
                 topListOption,
                 { headers: { token: token } }
               );
+
+              alert(res.data);
             } else {
               var res = await this.$axios.post(
                 `https://viaucsep6group1.azurewebsites.net/Toplists`,
@@ -276,7 +281,7 @@ export default {
                   }
                 }
               );
-
+              alert(res.data);
               console.log(res.data);
             }
           });
@@ -378,11 +383,14 @@ body {
 
   .svg-icon {
     margin-right: 12px;
+    width: 25px;
+    height: 25px;
     border: 2px solid black;
     padding: 10px;
-    padding-bottom: 1px;
-    border-radius: 100%;
+    padding-bottom: 5px;
+    border-radius: 50%;
     z-index: 1;
+    position: relative;
     svg {
       z-index: 2;
       background: transparent;
@@ -394,6 +402,14 @@ body {
     text-align: justify;
     top: 10px;
   }
+}
+
+.amount {
+  position: relative;
+  left: 307px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  font-size: 21px;
 }
 
 .line-separator {

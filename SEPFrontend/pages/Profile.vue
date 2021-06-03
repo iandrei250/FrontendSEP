@@ -6,7 +6,10 @@
     </div>
     <div class="profile-data">
       <div class="profile-picture">
-        <img src="../assets/images/spooder.jpg" alt="Profile picture" />
+        <img
+          src="../assets/images/No_Image_Available.jpg"
+          alt="Profile picture"
+        />
       </div>
       <div class="person">
         <div class="personal-data">
@@ -31,9 +34,9 @@
     <div class="separator">
       <div class="my-list">My List</div>
     </div>
-
     <div class="movie-list">
       <div v-for="movie in movies" :key="movie.id" class="movie">
+        <nuxt-link class="overlay" :to="`/movie?movie=${movie.id}`"></nuxt-link>
         <img
           v-if="movie.backdrop_path == null"
           class="movie-background"
@@ -50,6 +53,25 @@
         <div class="overview">{{ movie.overview }}</div>
       </div>
     </div>
+    <div class="separator">
+      <div class="my-list">My Following</div>
+    </div>
+    <div class="follows-list">
+      <div v-for="user in following" :key="user.id" class="followed-user">
+        <nuxt-link
+          class="overlay"
+          :to="`/userprofile?user=${user.username}`"
+        ></nuxt-link>
+        <div class="user-img">
+          <img src="../assets/images/No_Image_Available.jpg" alt="user image" />
+        </div>
+        <div class="followed-data">
+          <div class="followed-item">{{ user.username }}</div>
+          <div class="followed-item">{{ user.email }}</div>
+          <div class="followed-item">{{ user.country }}</div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -63,7 +85,8 @@ export default {
   data() {
     return {
       user: {},
-      movies: []
+      movies: [],
+      following: []
     };
   },
   mounted() {
@@ -72,6 +95,9 @@ export default {
   methods: {
     async getUser() {
       var authToken = this.getCookie("authToken");
+      if (authToken.includes(";")) {
+        authToken = authToken.split("; ")[0];
+      }
 
       await this.$axios
         .get("https://viaucsep6group1.azurewebsites.net/User", {
@@ -82,6 +108,7 @@ export default {
         .then(res => {
           this.user = res.data;
           this.movies = this.user.topLists[0].movies;
+          this.following = this.user.follows;
         });
 
       this.getImageForMovie();
@@ -222,6 +249,23 @@ body {
     margin-bottom: 15px;
     position: relative;
 
+    .overlay {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: black;
+      opacity: 0;
+      transition: all 0.3s ease;
+      z-index: 999;
+    }
+
+    &:hover {
+      .overlay {
+        opacity: 0.3;
+        transition: all 0.3s ease;
+      }
+    }
+
     .movie-background {
       width: 100%;
       height: 100%;
@@ -260,5 +304,61 @@ body {
   font-weight: 800;
   z-index: 2;
   color: black;
+}
+
+.followed-user {
+  position: relative;
+  display: flex;
+  margin: 24px;
+  box-shadow: 0 0 2px 2px #a2a2a224;
+  width: 700px;
+  border-radius: 12px;
+  height: 150px;
+  z-index: 99;
+  .user-img {
+    img {
+      width: 150px;
+      height: 150px;
+      border-top-left-radius: 12px;
+      border-bottom-left-radius: 12px;
+    }
+  }
+
+  .followed-data {
+    align-self: center;
+    margin-left: 24px;
+    font-size: 28px;
+    letter-spacing: 1px;
+
+    .followed-item {
+      padding: 8px;
+    }
+  }
+
+  .overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: black;
+    border-radius: 12px;
+    opacity: 0;
+    transition: all 0.3s ease;
+  }
+
+  &:hover {
+    .overlay {
+      opacity: 0.3;
+      transition: all 0.3s ease;
+    }
+  }
+}
+
+.follows-list {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  flex-basis: 50%;
 }
 </style>

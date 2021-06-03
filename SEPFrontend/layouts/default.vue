@@ -3,18 +3,15 @@
     <client-only>
       <Navbar design="default" />
       <nuxt />
-      <Footer />
     </client-only>
   </div>
 </template>
 
-<script scoped>
+<script>
 import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
 export default {
   components: {
-    Navbar,
-    Footer
+    Navbar
   }
 };
 </script>

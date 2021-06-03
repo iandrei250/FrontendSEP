@@ -10,6 +10,10 @@
         >
           <div class="image-holder">
             <div class="image">
+              <nuxt-link
+                class="overlay"
+                :to="`/movie?movie=${movie.id}`"
+              ></nuxt-link>
               <img
                 :src="
                   `http://image.tmdb.org/t/p/original/${movie.backdrop_path}`
@@ -38,6 +42,7 @@ export default {
 
   mounted() {
     this.getData();
+    this.deleteSearch();
   },
 
   methods: {
@@ -56,6 +61,9 @@ export default {
             }
           }
         });
+    },
+    deleteSearch() {
+      document.cookie = "search= ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
     }
   }
 };
@@ -130,6 +138,21 @@ export default {
   height: 50%;
 
   .image {
+    .overlay {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: black;
+      opacity: 0;
+      transition: all 0.3s ease;
+    }
+    &:hover {
+      .overlay {
+        opacity: 0.3;
+        transition: all 0.3s ease;
+        z-index: 999;
+      }
+    }
     img {
       width: 100% !important;
       height: 325px !important;

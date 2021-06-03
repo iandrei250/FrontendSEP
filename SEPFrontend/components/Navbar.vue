@@ -11,7 +11,10 @@
       <div class="logo-title">
         <img src="../assets/images/logo.png" alt="logo" />
       </div>
-      <div class="links" v-if="checkForLoggedInUser() == ``">
+      <div
+        class="links"
+        v-if="checkForLoggedInUser() == `` || checkForLoggedInUser() == null"
+      >
         <nuxt-link class="navbar-item" to="/">Home</nuxt-link>
         <nuxt-link class="navbar-item" to="/movielist">Movies</nuxt-link>
       </div>
@@ -19,9 +22,13 @@
         <nuxt-link class="navbar-item" to="/">Home</nuxt-link>
         <nuxt-link class="navbar-item" to="/profile">Profile</nuxt-link>
         <nuxt-link class="navbar-item" to="/movielist">Movies</nuxt-link>
+        <nuxt-link class="navbar-item" to="/userlist">Find an user</nuxt-link>
       </div>
 
-      <div v-if="checkForLoggedInUser() == ``" class="button-container">
+      <div
+        v-if="checkForLoggedInUser() == `` || checkForLoggedInUser() == null"
+        class="button-container"
+      >
         <div class="auth-btn" @click="openLogin()">
           <button class="interactive-button">Login</button>
         </div>
@@ -52,7 +59,6 @@ export default {
     LoginModal,
     RegisterModal
   },
-
   methods: {
     openLogin() {
       this.$refs["login"].open();

@@ -5,8 +5,12 @@
       <div class="top-rated-container">
         <div v-for="movie in topRated" :key="movie.id" class="top-movie">
           <div class="movie-image">
-            <div class="overlay"></div>
+            <nuxt-link
+              class="overlay"
+              :to="`/movie?movie=${movie.id}`"
+            ></nuxt-link>
             <img
+              class="image"
               :src="`http://image.tmdb.org/t/p/original/${movie.backdrop_path}`"
               alt="Movie image"
             />
@@ -48,7 +52,7 @@ export default {
 };
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 @import "../assets/style/butons.scss";
 section {
   font-family: Verdana, Geneva, Tahoma, sans-serif;
@@ -71,6 +75,7 @@ section {
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
 }
 
 .top-movie {
@@ -95,6 +100,7 @@ section {
   font-size: 24px;
   font-weight: 400;
   z-index: 2;
+  color: white;
 }
 
 .movie-description {
@@ -104,24 +110,30 @@ section {
   letter-spacing: 0.5px;
 }
 
-.button-holder {
-  z-index: 2;
-  margin-bottom: 50px;
-  margin-top: auto;
-}
-
-.overlay {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  opacity: 0.3;
-  background: rgb(0, 0, 0);
-  z-index: 1;
-}
-
 .movie-image {
   position: absolute;
-  width: 100%;
   height: 100%;
+
+  .image {
+    position: relative;
+  }
+
+  .overlay {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    opacity: 0;
+    background: rgb(0, 0, 0);
+    z-index: 1;
+  }
+
+  &:hover {
+    .overlay {
+      position: absolute;
+      opacity: 0.3;
+      transition: all 0.3s ease;
+      z-index: 999;
+    }
+  }
 }
 </style>
