@@ -249,6 +249,7 @@ export default {
           });
 
         if (userWithData.topLists.length == 0) {
+          topListOption.movies = this.movies;
           var res = await this.$axios.post(
             `https://viaucsep6group1.azurewebsites.net/Toplists`,
             topListOption,
