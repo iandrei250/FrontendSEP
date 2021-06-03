@@ -216,6 +216,10 @@ export default {
     async addToTopLists() {
       var token = this.getCookie("authToken");
 
+      if (token.includes(";")) {
+        token = token.split("; ")[0];
+      }
+
       var id = token.split("=")[0];
 
       let movie = {
