@@ -228,7 +228,7 @@ export default {
         year: 0
       };
 
-      this.movies.push(movie);
+      this.movies.push(this.movie);
 
       var topListOption = {
         id: 0,
