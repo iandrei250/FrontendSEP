@@ -76,14 +76,20 @@ export default {
 
     logOut() {
       var token = this.getCookie("authToken");
-
       this.$axios.post(
         "https://viaucsep6group1.azurewebsites.net/Auth/Logout",
         token
       );
 
-      document.cookie = "authToken=";
-      this.$router.push("/");
+      document.cookie = "authToken= ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
+
+      console.log(this.$route.name);
+
+      if ($nuxt.$route.name == "index") {
+        window.location.reload();
+      } else {
+        this.$router.push("/");
+      }
     },
 
     getCookie(name) {

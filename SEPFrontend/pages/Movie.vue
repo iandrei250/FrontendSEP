@@ -223,7 +223,7 @@ export default {
       var id = token.split("=")[0];
 
       let movie = {
-        id: this.movieId,
+        id: parseInt(this.movieId),
         title: "",
         year: 0
       };
@@ -233,7 +233,7 @@ export default {
       var topListOption = {
         id: 0,
         name: "My list",
-        userId: id,
+        userId: parseInt(id),
         movies: []
       };
 
@@ -263,10 +263,15 @@ export default {
         } else {
           userWithData.topLists.forEach(async topList => {
             if (topList.name == topListOption.name) {
+              topList.movies.forEach(movie => {
+                movie.topListses = null;
+              });
               topListOption.id = topList.id;
               this.movie.id = parseInt(this.movieId);
-              topList.movies.push(this.movie);
+              topList.movies.push(movie);
               topListOption.movies = topList.movies;
+              topListOption = JSON.parse(JSON.stringify(topListOption));
+
               console.log(topListOption);
 
               var res = await this.$axios.put(

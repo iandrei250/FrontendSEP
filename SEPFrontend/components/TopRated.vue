@@ -7,7 +7,7 @@
           <div class="movie-image">
             <nuxt-link
               class="overlay"
-              :to="`/movie?movie=${movie.id}`"
+              :to="`/movie?movie=${movie.imdb_id}`"
             ></nuxt-link>
             <img
               class="image"
